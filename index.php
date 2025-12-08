@@ -41,123 +41,30 @@
 
                 <div class="container mt-3">
 
-                    <!-- Ligne chiffres -->
-                    <div class="row text-center">
-                        <div class="col border square"></div>
-                        <div class="col border square">1</div>
-                        <div class="col border square">2</div>
-                        <div class="col border square">3</div>
-                        <div class="col border square">4</div>
-                        <div class="col border square">5</div>
-                        <div class="col border square">6</div>
-                        <div class="col border square">7</div>
-                        <div class="col border square">8</div>
-                        <div class="col border square">9</div>
-                        <div class="col border square">10</div>
-                    </div>
+                    <?php
+                    $lettres = range('A', 'J'); // lignes A à J
+                    $chiffres = range(1, 10);   // colonnes 1 à 10
+                    ?>
 
-                    <!-- Lignes A à J -->
-                    <!-- Je conserve strictement ta structure -->
-                    <!-- A -->
-                    <div class="row text-center">
-                        <div class="col border square">A</div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                    </div>
+                    <div class="container">
+                        <!-- Ligne des chiffres -->
+                        <div class="row text-center">
+                            <div class="col border square"></div> <!-- coin vide -->
+                            <?php foreach ($chiffres as $chiffre): ?>
+                                <div class="col border square"><?php echo $chiffre; ?></div>
+                            <?php endforeach; ?>
+                        </div>
 
-                    <!-- B -->
-                    <div class="row text-center">
-                        <div class="col border square">B</div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
+                        <!-- Lignes A à J -->
+                        <?php foreach ($lettres as $lettre): ?>
+                            <div class="row text-center">
+                                <div class="col border square"><?php echo $lettre; ?></div>
+                                <?php for ($i = 0; $i < 10; $i++): ?>
+                                    <div class="col border square"></div>
+                                <?php endfor; ?>
+                            </div>
+                        <?php endforeach; ?>
                     </div>
-
-                    <!-- C -->
-                    <div class="row text-center">
-                        <div class="col border square">C</div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                    </div>
-
-                    <!-- D -->
-                    <div class="row text-center">
-                        <div class="col border square">D</div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                    </div>
-
-                    <!-- E -->
-                    <div class="row text-center">
-                        <div class="col border square">E</div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                    </div>
-
-                    <!-- F -->
-                    <div class="row text-center">
-                        <div class="col border square">F</div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                    </div>
-
-                    <!-- G -->
-                    <div class="row text-center">
-                        <div class="col border square">G</div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                    </div>
-
-                    <!-- H -->
-                    <div class="row text-center">
-                        <div class="col border square">H</div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                    </div>
-
-                    <!-- I -->
-                    <div class="row text-center">
-                        <div class="col border square">I</div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                    </div>
-
-                    <!-- J -->
-                    <div class="row text-center">
-                        <div class="col border square">J</div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                    </div>
-
                 </div>
             </div>
 
@@ -170,122 +77,30 @@
 
                 <div class="container mt-3">
 
-                    <!-- Ligne chiffres -->
-                    <div class="row text-center mt-3">
-                        <div class="col border square"></div>
-                        <div class="col border square">1</div>
-                        <div class="col border square">2</div>
-                        <div class="col border square">3</div>
-                        <div class="col border square">4</div>
-                        <div class="col border square">5</div>
-                        <div class="col border square">6</div>
-                        <div class="col border square">7</div>
-                        <div class="col border square">8</div>
-                        <div class="col border square">9</div>
-                        <div class="col border square">10</div>
-                    </div>
+                    <?php
+                    $lettres = range('A', 'J'); // lignes A à J
+                    $chiffres = range(1, 10);   // colonnes 1 à 10
+                    ?>
 
-                    <!-- Lignes A à J (identiques à gauche) -->
-                    <!-- A -->
-                    <div class="row text-center">
-                        <div class="col border square">A</div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                    </div>
+                    <div class="container">
+                        <!-- Ligne des chiffres -->
+                        <div class="row text-center">
+                            <div class="col border square"></div> <!-- coin vide -->
+                            <?php foreach ($chiffres as $chiffre): ?>
+                                <div class="col border square"><?php echo $chiffre; ?></div>
+                            <?php endforeach; ?>
+                        </div>
 
-                    <!-- B -->
-                    <div class="row text-center">
-                        <div class="col border square">B</div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
+                        <!-- Lignes A à J -->
+                        <?php foreach ($lettres as $lettre): ?>
+                            <div class="row text-center">
+                                <div class="col border square"><?php echo $lettre; ?></div>
+                                <?php for ($i = 0; $i < 10; $i++): ?>
+                                    <div class="col border square"></div>
+                                <?php endfor; ?>
+                            </div>
+                        <?php endforeach; ?>
                     </div>
-
-                    <!-- C -->
-                    <div class="row text-center">
-                        <div class="col border square">C</div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                    </div>
-
-                    <!-- D -->
-                    <div class="row text-center">
-                        <div class="col border square">D</div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                    </div>
-
-                    <!-- E -->
-                    <div class="row text-center">
-                        <div class="col border square">E</div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                    </div>
-
-                    <!-- F -->
-                    <div class="row text-center">
-                        <div class="col border square">F</div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                    </div>
-
-                    <!-- G -->
-                    <div class="row text-center">
-                        <div class="col border square">G</div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                    </div>
-
-                    <!-- H -->
-                    <div class="row text-center">
-                        <div class="col border square">H</div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                    </div>
-
-                    <!-- I -->
-                    <div class="row text-center">
-                        <div class="col border square">I</div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                    </div>
-
-                    <!-- J -->
-                    <div class="row text-center">
-                        <div class="col border square">J</div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                        <div class="col border square"></div><div class="col border square"></div>
-                    </div>
-
                 </div>
             </div>
 
