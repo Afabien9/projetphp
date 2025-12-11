@@ -9,30 +9,24 @@ if (!isset($_SESSION["role"])) {
 include($_SERVER['DOCUMENT_ROOT']."/Projet_php/scripts/sql-connect.php");
 $sql = new SqlConnect();
 
-// Le joueur courant
 $current = $_SESSION["role"]; // joueur1 ou joueur2
 
-// Vérifier que TOUS les bateaux sont placés
-// Total cases : 5 + 4 + 3 + 3 + 2 = 17
+// Vérifier que tous les bateaux de CE joueur sont placés
 $req = $sql->db->query("SELECT COUNT(*) FROM $current WHERE boat > 0");
 $placed = $req->fetchColumn();
 
 if ($placed < 17) {
-    // On refuse de commencer la partie
     $_SESSION["error_msg"] = "Vous devez placer tous vos bateaux avant de commencer.";
     header("Location: /Projet_php/views/players-selected.php");
     exit;
 }
 
-// Mode combat
+// Passer ce joueur en mode combat
 $_SESSION["mode"] = "combat";
 
-// TOUR INITIAL → Joueur 1 commence
-$_SESSION["turn"] = "joueur1";
+// Initialiser l'état global de la partie : J1 commence, pas de gagnant
+$sql->db->query("UPDATE game_state SET current_turn = 'joueur1', winner = NULL WHERE id = 1");
 
-// Supprimer éventuel gagnant précédent
-unset($_SESSION["winner"]);
-
-// Lancer partie
+// Lancer le jeu
 header("Location: /Projet_php/views/game.php");
 exit;

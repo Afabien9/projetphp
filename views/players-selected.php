@@ -1,11 +1,12 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) session_start();
 
-/* ------------------------------
-   1. CHOIX DU JOUEUR (J1 / J2)
--------------------------------*/
+/* ----------------------------------------------
+   1) PREMIÈRE VISITE → CHOIX DU JOUEUR
+-----------------------------------------------*/
 if (!isset($_SESSION["role"])) {
 
+    // Choix reçu ? On enregistre puis on recharge cette page
     if (isset($_GET["role"])) {
         $_SESSION["role"] = ($_GET["role"] === "j1") ? "joueur1" : "joueur2";
         $_SESSION["mode"] = "placement";
@@ -13,6 +14,7 @@ if (!isset($_SESSION["role"])) {
         exit;
     }
 
+    // Page de choix (aucune redirection ici)
     ?>
     <!DOCTYPE html>
     <html>
@@ -22,7 +24,7 @@ if (!isset($_SESSION["role"])) {
         <link rel="stylesheet" href="/Projet_php/styles_css.css">
     </head>
     <body>
-        <h2 style="text-align:center;">Choisissez votre rôle</h2>
+        <h2 style="text-align:center; margin-top:80px;">Choisissez votre rôle</h2>
 
         <div style="text-align:center; margin-top:40px;">
             <a href="?role=j1"><button>Joueur 1</button></a>
@@ -34,9 +36,9 @@ if (!isset($_SESSION["role"])) {
     exit;
 }
 
-/* ------------------------------------
-   2. Informations joueur + connexion BDD
--------------------------------------*/
+/* ----------------------------------------------
+   2) ON A UN RÔLE → MODE PLACEMENT
+-----------------------------------------------*/
 $current = $_SESSION["role"];
 $_SESSION["mode"] = "placement";
 
@@ -44,7 +46,7 @@ include($_SERVER['DOCUMENT_ROOT']."/Projet_php/scripts/sql-connect.php");
 $sql = new SqlConnect();
 
 /* ------------------------------------
-   3. Liste des bateaux (ID → taille)
+   Liste des bateaux (ID → taille)
 -------------------------------------*/
 $ships = [
     1 => ["name" => "Porte-avions",      "size" => 5],
@@ -55,7 +57,7 @@ $ships = [
 ];
 
 /* ------------------------------------
-   4. Chargement de la grille du joueur
+   Chargement de la grille du joueur
 -------------------------------------*/
 $req = $sql->db->prepare("SELECT * FROM $current ORDER BY idgrid ASC");
 $req->execute();
@@ -64,11 +66,9 @@ $grid = $req->fetchAll(PDO::FETCH_ASSOC);
 // Vérification de l'état des deux joueurs
 $ready1 = $sql->db->query("SELECT COUNT(*) FROM joueur1 WHERE boat > 0")->fetchColumn() == 17;
 $ready2 = $sql->db->query("SELECT COUNT(*) FROM joueur2 WHERE boat > 0")->fetchColumn() == 17;
-
 $bothReady = ($ready1 && $ready2);
 
-
-/* Déterminer si un bateau est placé */
+/* Bateaux déjà placés */
 $boatPlaced = array_fill_keys(array_keys($ships), false);
 foreach ($grid as $cell) {
     if ($cell["boat"] > 0) {
@@ -83,64 +83,61 @@ foreach ($grid as $cell) {
     <title>Placement des bateaux</title>
     <link rel="stylesheet" href="/Projet_php/styles_css.css">
 
-<style>
-    body {
-        display: flex;
-        justify-content: center;
-        gap: 40px;
-    }
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+        }
 
-    .ship-list { width: 220px; }
-    .ship {
-        background: #444;
-        color: white;
-        padding: 12px;
-        margin: 10px 0;
-        cursor: grab;
-        text-align: center;
-        border-radius: 4px;
-        opacity: 1;
-        transition: 0.2s;
-        font-size: 16px;
-    }
-    .ship.placed {
-        opacity: .35;
-        cursor: not-allowed;
-    }
+        .ship-list { width: 220px; }
+        .ship {
+            background: #444;
+            color: white;
+            padding: 12px;
+            margin: 10px 0;
+            cursor: grab;
+            text-align: center;
+            border-radius: 4px;
+            opacity: 1;
+            transition: 0.2s;
+            font-size: 16px;
+        }
+        .ship.placed {
+            opacity: .35;
+            cursor: not-allowed;
+        }
 
-    .grid-container {
-        display: grid;
-        grid-template-columns: repeat(10, 35px);
-        gap: 5px;
-    }
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(10, 35px);
+            gap: 5px;
+        }
 
-    .cell {
-        width: 35px;
-        height: 35px;
-        background: #ccc;
-        border: 1px solid #333;
-        position: relative;
-    }
+        .cell {
+            width: 35px;
+            height: 35px;
+            background: #ccc;
+            border: 1px solid #333;
+            position: relative;
+        }
 
-    .cell.ship-cell { background: #666 !important; cursor: pointer; }
+        .cell.ship-cell { background: #666 !important; cursor: pointer; }
 
-    /* PREVIEW */
-    .cell.preview-ok {
-        background: rgba(0, 255, 0, 0.45) !important;
-    }
-    .cell.preview-bad {
-        background: rgba(255, 0, 0, 0.45) !important;
-    }
-</style>
+        .cell.preview-ok {
+            background: rgba(0, 255, 0, 0.45) !important;
+        }
+        .cell.preview-bad {
+            background: rgba(255, 0, 0, 0.45) !important;
+        }
+    </style>
 </head>
 
 <body>
 
-<!-- --------------------- -->
-<!--   LISTE DES BATEAUX   -->
-<!-- --------------------- -->
+<!-- LISTE DES BATEAUX -->
 <div class="ship-list">
-    <h3>Bateaux disponibles</h3>
+    <h3>Bateaux disponibles (<?= htmlspecialchars($current) ?>)</h3>
 
     <?php foreach ($ships as $id => $info): ?>
         <div class="ship <?= $boatPlaced[$id] ? "placed" : "" ?>"
@@ -152,14 +149,20 @@ foreach ($grid as $cell) {
     <?php endforeach; ?>
 
     <p style="font-size:14px; margin-top:20px; opacity:.7;">
-        ➤ Cliquez sur un bateau pour changer son orientation  
-        ➤ Cliquez sur un bateau posé (grille) pour le retirer
+        ➤ Cliquez sur un bateau pour changer son orientation<br>
+        ➤ Cliquez sur un bateau posé sur la grille pour le retirer
+    </p>
+
+    <p style="margin-top:20px;">
+        <?php if ($bothReady): ?>
+            ✅ Les deux joueurs sont prêts.<br>Vous pouvez lancer la partie.
+        <?php else: ?>
+            ⏳ En attente que l'autre joueur place ses bateaux...
+        <?php endif; ?>
     </p>
 </div>
 
-<!-- --------------------- -->
-<!--        GRILLE         -->
-<!-- --------------------- -->
+<!-- GRILLE -->
 <div class="grid-container" id="grid">
 <?php foreach ($grid as $case): ?>
     <div class="cell <?= $case["boat"]>0 ? "ship-cell" : "" ?>"
@@ -169,20 +172,13 @@ foreach ($grid as $cell) {
 <?php endforeach; ?>
 </div>
 
-
 <script>
-/* ------------------------------------
-   VARIABLES
--------------------------------------*/
 let draggedShip = null;
 let shipSize = 0;
 let shipId = 0;
 let orientation = "H"; // H = horizontal, V = vertical
 
-
-/* ------------------------------------
-   CHANGER ORIENTATION AU CLIC
--------------------------------------*/
+// Changer orientation
 document.querySelectorAll(".ship").forEach(ship => {
     ship.addEventListener("click", () => {
         if (ship.classList.contains("placed")) return;
@@ -190,10 +186,7 @@ document.querySelectorAll(".ship").forEach(ship => {
     });
 });
 
-
-/* ------------------------------------
-   DRAG START
--------------------------------------*/
+// Drag start
 document.querySelectorAll(".ship").forEach(ship => {
     ship.addEventListener("dragstart", e => {
         if (ship.classList.contains("placed")) {
@@ -206,10 +199,7 @@ document.querySelectorAll(".ship").forEach(ship => {
     });
 });
 
-
-/* ------------------------------------
-   SUPPRESSION D’UN BATEAU (CLIC)
--------------------------------------*/
+// Supprimer un bateau posé
 document.querySelectorAll(".ship-cell").forEach(cell => {
     cell.addEventListener("click", () => {
         const boat = parseInt(cell.dataset.boat);
@@ -223,32 +213,22 @@ document.querySelectorAll(".ship-cell").forEach(cell => {
     });
 });
 
-
-/* ------------------------------------
-   CALCUL DES CASES OCCUPÉES
--------------------------------------*/
 function computePositions(start) {
     let pos = [];
-
     for (let i = 0; i < shipSize; i++) {
         let id = orientation === "H" ? start + i : start + i * 10;
 
-        if (id > 100) return null;  // dépassement
+        if (id > 100) return null;
 
         if (orientation === "H" &&
             Math.floor((start-1)/10) !== Math.floor((id-1)/10))
-            return null; // dépassement horizontal
+            return null;
 
         pos.push(id);
     }
-
     return pos;
 }
 
-
-/* ------------------------------------
-   VERIFICATION ADJACENCE
--------------------------------------*/
 function isAdjacentForbidden(positions) {
     const neighbors = [];
 
@@ -278,14 +258,9 @@ function isAdjacentForbidden(positions) {
             return true;
         }
     }
-
     return false;
 }
 
-
-/* ------------------------------------
-   PREVIEW (VERT / ROUGE)
--------------------------------------*/
 function clearPreview() {
     document.querySelectorAll(".cell")
         .forEach(c => c.classList.remove("preview-ok", "preview-bad"));
@@ -305,10 +280,6 @@ function showPreview(start) {
     });
 }
 
-
-/* ------------------------------------
-   GESTION DU DROP
--------------------------------------*/
 document.querySelectorAll(".cell").forEach(cell => {
 
     cell.addEventListener("dragover", e => {
@@ -332,10 +303,6 @@ document.querySelectorAll(".cell").forEach(cell => {
     });
 });
 
-
-/* ------------------------------------
-   ENVOI AU SERVEUR
--------------------------------------*/
 function sendToServer(shipId, positions) {
     fetch("/Projet_php/scripts/place_boat.php", {
         method:"POST",
@@ -345,31 +312,18 @@ function sendToServer(shipId, positions) {
 }
 </script>
 
-
-<!-- ------------------------------------
-     BOUTON COMMENCER LA PARTIE
-------------------------------------- -->
-<div style="text-align:center; margin-top:40px;">
-<?php if ($bothReady): ?>
-    <form method="post" action="/Projet_php/scripts/start_battle.php">
-        <button style="padding:15px 25px; font-size:20px;">
-            ✔ Commencer la partie
-        </button>
-    </form>
-<?php elseif (!$ready1 && $current == "joueur1"): ?>
-    <p>Placez tous vos bateaux (<?= $ready1 ? "✔" : "❌" ?>)</p>
-<?php elseif (!$ready2 && $current == "joueur2"): ?>
-    <p>Placez tous vos bateaux (<?= $ready2 ? "✔" : "❌" ?>)</p>
-<?php else: ?>
-    <p style="font-size:20px; color:orange;">
-        ⏳ En attente de l’autre joueur...
-    </p>
-    <script>
-        setTimeout(() => { location.reload(); }, 2000);
-    </script>
-<?php endif; ?>
+<!-- BOUTON COMMENCER LA PARTIE -->
+<div style="position:fixed; bottom:40px; left:0; right:0; text-align:center;">
+    <?php if ($bothReady): ?>
+        <form method="post" action="/Projet_php/scripts/start_battle.php">
+            <button style="padding:15px 25px; font-size:20px;">
+                ✔ Commencer la partie
+            </button>
+        </form>
+    <?php else: ?>
+        <span style="opacity:0.7;">Les deux joueurs doivent avoir placé tous leurs bateaux.</span>
+    <?php endif; ?>
 </div>
-
 
 </body>
 </html>
