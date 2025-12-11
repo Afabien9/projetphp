@@ -8,25 +8,44 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Sécurité : si aucun rôle, retour à l'accueil
+// Sécurité : si aucun rôle ⇒ retour à l'accueil
 if (!isset($_SESSION["role"])) {
     header("Location: /Projet_php/index.php");
     exit;
 }
 
-include($_SERVER['DOCUMENT_ROOT'] . "/Projet_php/scripts/sql-connect.php");
+// Sécurité : si pas en mode combat ⇒ retour au placement
+if (!isset($_SESSION["mode"]) || $_SESSION["mode"] !== "combat") {
+    header("Location: /Projet_php/views/players-selected.php");
+    exit;
+}
 
+// Connexion DB
+include($_SERVER['DOCUMENT_ROOT'] . "/Projet_php/scripts/sql-connect.php");
 $sql = new SqlConnect();
 
-// 📌 Rôle du joueur courant
-$current = $_SESSION["role"]; // joueur1 ou joueur2
+// Rôle du joueur
+$current = $_SESSION["role"];   // joueur1 ou joueur2
 $enemy   = ($current === "joueur1") ? "joueur2" : "joueur1";
 
-// 📌 Récupération des 2 grilles
+$myTurn = ($_SESSION["turn"] === $current);
+
+// Rafraîchissement automatique si on attend l'autre joueur
+if (!$myTurn) {
+    echo "<script>
+            setTimeout(() => {
+                location.reload();
+            }, 2000);
+          </script>";
+}
+
+
+// Récupération de la grille joueur
 $req = $sql->db->prepare("SELECT * FROM $current ORDER BY idgrid ASC");
 $req->execute();
 $myGrid = $req->fetchAll(PDO::FETCH_ASSOC);
 
+// Récupération de la grille ennemie
 $req2 = $sql->db->prepare("SELECT * FROM $enemy ORDER BY idgrid ASC");
 $req2->execute();
 $enemyGrid = $req2->fetchAll(PDO::FETCH_ASSOC);
@@ -35,24 +54,40 @@ $enemyGrid = $req2->fetchAll(PDO::FETCH_ASSOC);
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Bataille Navale - <?= htmlspecialchars($current) ?></title>
+    <title>Bataille Navale – <?= htmlspecialchars($current) ?></title>
     <link rel="stylesheet" href="/Projet_php/styles_css.css">
+    <style>
+        .turnBox {
+            text-align:center;
+            font-size:22px;
+            padding:10px;
+            margin-bottom:20px;
+            font-weight:bold;
+        }
+        .turnYou { color: green; }
+        .turnWait { color: red; }
+    </style>
 </head>
 <body>
 
-<!-- ========================== -->
-<!-- ⭐ 1. TA GRILLE (non cliquable) -->
-<!-- ========================== -->
+<!-- 🎯 AFFICHAGE DU TOUR -->
+<div class="turnBox <?= $myTurn ? "turnYou" : "turnWait" ?>">
+    <?= $myTurn ? "🔥 À VOUS DE JOUER !" : "⏳ En attente de l'autre joueur..." ?>
+</div>
+
+
+
+<!--  1. TA GRILLE (non cliquable) -->
+
 
 <h2 style="text-align:center;">Votre grille (<?= $current ?>)</h2>
 
 <div class="grid-container">
 <?php
 foreach ($myGrid as $case) {
-    
-    // Affichage normal des bateaux du joueur
-    if ($case['boat'] > 0) $color = 'black';
-    else $color = 'lightgrey';
+
+    if ($case['boat'] > 0) $color = '#333';     // bateau
+    else $color = 'lightgrey';                  // eau
 
     if ($case['checked'] == 1) {
         $color = ($case['boat'] > 0) ? 'red' : 'blue';
@@ -65,9 +100,9 @@ foreach ($myGrid as $case) {
 
 <br><br>
 
-<!-- ========================== -->
-<!-- ⭐ 2. GRILLE ADVERSE (CLIQUABLE) -->
-<!-- ========================== -->
+
+<!-- 2. GRILLE ADVERSE (CLIQUABLE) -->
+
 
 <h2 style="text-align:center;">Grille adverse (<?= $enemy ?>)</h2>
 
@@ -75,16 +110,18 @@ foreach ($myGrid as $case) {
 <?php
 foreach ($enemyGrid as $case) {
 
-    // ❗ IMPORTANT : on masque TOUJOURS les bateaux adverses non touchés
-    $color = 'grey'; // par défaut, l'adversaire reste invisible
+    // Par défaut on masque les bateaux ennemis
+    $color = 'grey';
 
     if ($case['checked'] == 1) {
-        // Un tir a déjà été effectué ici
         $color = ($case['boat'] > 0) ? 'red' : 'blue';
     }
 
-    // ⛔ Si la case a déjà été jouée → on bloque le bouton
-    $disabled = ($case['checked'] == 1) ? "disabled" : "";
+    // Désactiver si la case a déjà été jouée OU si ce n'est pas ton tour
+    $disabled = "";
+    if ($case['checked'] == 1 || !$myTurn) {
+        $disabled = "disabled";
+    }
 
     echo '<form method="post" action="/Projet_php/scripts/click_case.php" style="display:inline-block;">';
     echo '<button class="cell-btn"
@@ -101,6 +138,7 @@ foreach ($enemyGrid as $case) {
 
 <br><br>
 
+<!-- RESET TOTAL -->
 <div style="text-align:center;">
     <form method="post" action="/Projet_php/scripts/reset_total.php">
         <button type="submit" name="reset_total">❌ Fin de partie (RESET)</button>

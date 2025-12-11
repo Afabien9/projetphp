@@ -1,22 +1,18 @@
 <?php
-header("Refresh: 2");
 session_start();
 
-$fichier = __DIR__ . "/etat_joueurs.json";
-
-if (!file_exists($fichier)) {
-  file_put_contents($fichier, json_encode(["j1" => null, "j2" => null]));
-}
-
-$etat = json_decode(file_get_contents($fichier), true);
-
+// Rôle non choisi → écran sélection
 if (!isset($_SESSION["role"])) {
-  include(__DIR__ . '/views/players-selected.php');
-  exit;
+    include(__DIR__ . "/views/players-selected.php");
+    exit;
 }
 
-if ($etat["j1"] !== null && $etat["j2"] !== null) {
-  include(__DIR__ . '/views/game.php');
-} else {
-  include(__DIR__ . '/views/players-selected.php');
+// En mode placement → rester sur placement
+if (!isset($_SESSION["mode"]) || $_SESSION["mode"] !== "combat") {
+    include(__DIR__ . "/views/players-selected.php");
+    exit;
 }
+
+// En mode combat → lancer game.php
+include(__DIR__ . "/views/game.php");
+exit;

@@ -46,3 +46,11 @@
 .cell-btn:hover {
     opacity: 0.8;
 }
+
+.cell.preview-ok {
+    background: rgba(0, 255, 0, 0.5) !important;
+}
+
+.cell.preview-bad {
+    background: rgba(255, 0, 0, 0.5) !important;
+}
