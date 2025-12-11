@@ -1,5 +1,5 @@
 <?php
-header("Refresh: 5");
+header("Refresh: 2");
 session_start();
 
 $fichier = __DIR__ . "/etat_joueurs.json";
@@ -10,8 +10,13 @@ if (!file_exists($fichier)) {
 
 $etat = json_decode(file_get_contents($fichier), true);
 
-if ($etat["j1"] != null && $etat["j2"] != null) {
-  include(__DIR__ . '/views/game.php'); 
+if (!isset($_SESSION["role"])) {
+  include(__DIR__ . '/views/players-selected.php');
+  exit;
+}
+
+if ($etat["j1"] !== null && $etat["j2"] !== null) {
+  include(__DIR__ . '/views/game.php');
 } else {
   include(__DIR__ . '/views/players-selected.php');
 }

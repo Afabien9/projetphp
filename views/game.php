@@ -8,79 +8,96 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+// Sécurité : si aucun rôle, retour à l'accueil
+if (!isset($_SESSION["role"])) {
+    header("Location: /Projet_php/index.php");
+    exit;
+}
+
 include($_SERVER['DOCUMENT_ROOT'] . "/Projet_php/scripts/sql-connect.php");
 
 $sql = new SqlConnect();
 
-// 📌 Le joueur actuel
-$current = $_SESSION["role"];     // joueur1 ou joueur2
-$enemy   = ($current === 'joueur1') ? 'joueur2' : 'joueur1';
+// 📌 Rôle du joueur courant
+$current = $_SESSION["role"]; // joueur1 ou joueur2
+$enemy   = ($current === "joueur1") ? "joueur2" : "joueur1";
 
-// 📌 Récupérer les deux grilles
-$req = $sql->db->prepare("SELECT * FROM $enemy ORDER BY idgrid ASC");
+// 📌 Récupération des 2 grilles
+$req = $sql->db->prepare("SELECT * FROM $current ORDER BY idgrid ASC");
 $req->execute();
-$enemyGrid = $req->fetchAll(PDO::FETCH_ASSOC);
+$myGrid = $req->fetchAll(PDO::FETCH_ASSOC);
 
-$req2 = $sql->db->prepare("SELECT * FROM $current ORDER BY idgrid ASC");
+$req2 = $sql->db->prepare("SELECT * FROM $enemy ORDER BY idgrid ASC");
 $req2->execute();
-$myGrid = $req2->fetchAll(PDO::FETCH_ASSOC);
+$enemyGrid = $req2->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Game</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bataille Navale - <?= htmlspecialchars($current) ?></title>
     <link rel="stylesheet" href="/Projet_php/styles_css.css">
 </head>
-
 <body>
 
+<!-- ========================== -->
+<!-- ⭐ 1. TA GRILLE (non cliquable) -->
+<!-- ========================== -->
+
+<h2 style="text-align:center;">Votre grille (<?= $current ?>)</h2>
+
+<div class="grid-container">
 <?php
-// *************************************************
-// ⭐ SI TU ES JOUEUR 1 → TA GRILLE EN HAUT
-// ⭐ SI TU ES JOUEUR 2 → TA GRILLE EN HAUT
-// *************************************************
-
-echo "<h2 style='text-align:center;'>Votre grille ($current)</h2>";
-echo "<div class='grid-container'>";
-
 foreach ($myGrid as $case) {
-    if ($case['boat'] > 0) $color = 'black'; else $color = 'lightgrey';
-    if ($case['checked'] == 1) $color = ($case['boat'] > 0) ? 'red' : 'blue';
+    
+    // Affichage normal des bateaux du joueur
+    if ($case['boat'] > 0) $color = 'black';
+    else $color = 'lightgrey';
 
-    echo "<div class='cell-btn' style='background-color:$color;'></div>";
-}
-
-echo "</div><br><br>";
-
-// *************************************************
-// ⭐ GRILLE DE L’ADVERSAIRE TOUJOURS EN BAS
-// ⭐ ET ELLE EST CLIQUABLE
-// *************************************************
-
-echo "<h2 style='text-align:center;'>Grille adverse ($enemy)</h2>";
-echo "<div class='grid-container'>";
-
-foreach ($enemyGrid as $case) {
-
-    $color = 'grey';
     if ($case['checked'] == 1) {
         $color = ($case['boat'] > 0) ? 'red' : 'blue';
     }
 
-    echo '<form method="post" action="/Projet_php/scripts/click_case.php">';
-    echo '<button class="cell-btn" 
-                 type="submit" 
-                 name="cell" 
-                 value="'.$case['idgrid'].'" 
-                 style="background-color:'.$color.';">
+    echo "<div class='cell-btn' style='background-color:$color;'></div>";
+}
+?>
+</div>
+
+<br><br>
+
+<!-- ========================== -->
+<!-- ⭐ 2. GRILLE ADVERSE (CLIQUABLE) -->
+<!-- ========================== -->
+
+<h2 style="text-align:center;">Grille adverse (<?= $enemy ?>)</h2>
+
+<div class="grid-container">
+<?php
+foreach ($enemyGrid as $case) {
+
+    // ❗ IMPORTANT : on masque TOUJOURS les bateaux adverses non touchés
+    $color = 'grey'; // par défaut, l'adversaire reste invisible
+
+    if ($case['checked'] == 1) {
+        // Un tir a déjà été effectué ici
+        $color = ($case['boat'] > 0) ? 'red' : 'blue';
+    }
+
+    // ⛔ Si la case a déjà été jouée → on bloque le bouton
+    $disabled = ($case['checked'] == 1) ? "disabled" : "";
+
+    echo '<form method="post" action="/Projet_php/scripts/click_case.php" style="display:inline-block;">';
+    echo '<button class="cell-btn"
+                 type="submit"
+                 name="cell"
+                 value="'. $case['idgrid'] .'"
+                 style="background-color:'.$color.';"
+                 '.$disabled.'>
           </button>';
     echo '</form>';
 }
-
-echo "</div>";
 ?>
+</div>
 
 <br><br>
 

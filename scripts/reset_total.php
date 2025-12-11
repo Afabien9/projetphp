@@ -9,11 +9,7 @@ $sql = new SqlConnect();
 $sql->db->query("UPDATE joueur1 SET checked = 0, boat = 0");
 $sql->db->query("UPDATE joueur2 SET checked = 0, boat = 0");
 
-// reset des états
-file_put_contents($_SERVER['DOCUMENT_ROOT'] . "/Projet_php/etat_joueurs.json", json_encode([
-    "j1" => null,
-    "j2" => null
-]));
+
 
 // 🔥 destruction totale de la session
 session_start();
@@ -26,3 +22,8 @@ setcookie(session_name(), '', time() - 3600, '/');
 // redirect propre
 header("Location: /Projet_php/index.php");
 exit;
+
+file_put_contents(__DIR__ . '/../etat_joueurs.json', json_encode([
+    "j1" => null,
+    "j2" => null
+]));

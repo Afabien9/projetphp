@@ -1,44 +1,21 @@
 <?php
-// DEBUG : afficher les erreurs
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
 session_start();
-
-// Toujours inclure sql-connect avec chemin ABSOLU
 include($_SERVER['DOCUMENT_ROOT'] . "/Projet_php/scripts/sql-connect.php");
 
-// Vérifier si on a reçu la cellule cliquée
-if (!isset($_POST["cell"])) {
-    echo "Aucune cellule reçue.";
+if (!isset($_SESSION["role"]) || !isset($_POST["cell"])) {
+    header("Location: /Projet_php/index.php");
     exit;
 }
 
-// Vérifier si la session contient un rôle
-if (!isset($_SESSION["role"])) {
-    echo "Erreur : aucun rôle dans la session.";
-    exit;
-}
+$current = $_SESSION["role"];
+$enemy   = ($current === "joueur1") ? "joueur2" : "joueur1";
+$cellId  = (int) $_POST["cell"];
 
 $sql = new SqlConnect();
 
-// Déterminer quelle grille mettre à jour
-$player = ($_SESSION["role"] === 'joueur1') ? 'joueur2' : 'joueur1';
+// On marque le tir sur la grille adverse
+$req = $sql->db->prepare("UPDATE $enemy SET checked = 1 WHERE idgrid = :id");
+$req->execute([':id' => $cellId]);
 
-// Debug rapide
-// echo "Mise à jour grille : $player<br>";
-
-$query = "
-    UPDATE $player
-    SET checked = CASE WHEN checked = 0 THEN 1 ELSE 0 END
-    WHERE idgrid = :cell
-";
-
-$req = $sql->db->prepare($query);
-$req->execute(['cell' => $_POST["cell"]]);
-
-// Retour au jeu
 header("Location: /Projet_php/index.php");
 exit;
-?>
