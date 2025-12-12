@@ -1,5 +1,3 @@
-/* placement_style.css */
-/* Style moderne lumineux pour la page de placement */
 
 :root {
     --bg1: #0f1724;
@@ -10,7 +8,6 @@
     --grey: #b7c3d8;
 }
 
-/* Global */
 body {
     margin: 0;
     padding: 30px;
@@ -22,7 +19,6 @@ body {
     color: var(--text);
 }
 
-/* Bateaux */
 .ship-list {
     width: 240px;
     padding: 20px;
@@ -61,7 +57,6 @@ body {
     filter: grayscale(30%);
 }
 
-/* Grille */
 .grid-container {
     display: grid;
     grid-template-columns: repeat(10, 38px);
@@ -92,7 +87,7 @@ body {
     cursor: pointer;
 }
 
-/* Prévisualisation */
+
 .cell.preview-ok {
     background: rgba(124, 255, 124, 0.55) !important;
     box-shadow: 0 0 15px rgba(124,255,124,0.45);
@@ -103,7 +98,7 @@ body {
     box-shadow: 0 0 15px rgba(255,60,60,0.45);
 }
 
-/* Bouton démarrer */
+
 .start-container {
     position: fixed;
     bottom: 40px;

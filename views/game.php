@@ -99,7 +99,7 @@ $enemyGrid = $req2->fetchAll(PDO::FETCH_ASSOC);
             </div>
         </div>
 
-        <!-- === GRILLE ENNEMIE === -->
+        <!-- GRILLE ENNEMIE  -->
         <div class="board-block">
             <h2 class="board-title">Grille adverse (<?= $enemy ?>)</h2>
 

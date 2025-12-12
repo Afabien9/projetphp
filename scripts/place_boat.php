@@ -12,9 +12,8 @@ $data = json_decode(file_get_contents("php://input"), true);
 include($_SERVER['DOCUMENT_ROOT']."/Projet_php/scripts/sql-connect.php");
 $sql = new SqlConnect();
 
-/* ---------------------------------------------------
-   1) SUPPRESSION D’UN BATEAU (deleteShip)
-----------------------------------------------------*/
+// SUPPRESSION D’UN BATEAU (deleteShip)
+
 if (isset($data["deleteShip"])) {
     $shipId = intval($data["deleteShip"]);
 
@@ -25,10 +24,7 @@ if (isset($data["deleteShip"])) {
     exit;
 }
 
-/* ---------------------------------------------------
-   2) PLACEMENT / DÉPLACEMENT D’UN BATEAU
-      (shipId + positions[])
-----------------------------------------------------*/
+//  PLACEMENT / DÉPLACEMENT D’UN BATEAU (shipId + positions[])
 if (!isset($data["shipId"], $data["positions"]) || !is_array($data["positions"])) {
     exit("INVALID DATA");
 }
@@ -36,19 +32,14 @@ if (!isset($data["shipId"], $data["positions"]) || !is_array($data["positions"])
 $shipId    = intval($data["shipId"]);
 $positions = array_map('intval', $data["positions"]);
 
-/* ---------------------------------------------------
-   2.1) Vérifier que les cases demandées existent
-----------------------------------------------------*/
+// Vérifier que les cases demandées existent
 foreach ($positions as $id) {
     if ($id < 1 || $id > 100) {
         exit("INVALID POS");
     }
 }
 
-/* ---------------------------------------------------
-   2.2) Vérifier qu’il n’y a PAS d’autre bateau 
-        sur les cases demandées (collision directe)
-----------------------------------------------------*/
+// Vérifier qu’il n’y a PAS d’autre bateau  sur les cases demandées (collision directe)
 $placeholders = implode(",", array_fill(0, count($positions), "?"));
 $query = "SELECT COUNT(*)
           FROM $table
@@ -66,10 +57,7 @@ if ($check->fetchColumn() > 0) {
     exit;
 }
 
-/* ---------------------------------------------------
-   2.3) Interdire QUE LES BATEAUX SE TOUCHENT
-        (voisins horizontaux, verticaux, diagonaux)
-----------------------------------------------------*/
+// Interdire QUE LES BATEAUX SE TOUCHENT (voisins horizontaux, verticaux, diagonaux)
 foreach ($positions as $id) {
     $row = intdiv($id - 1, 10);
     $col = ($id - 1) % 10;
@@ -103,15 +91,11 @@ foreach ($positions as $id) {
     }
 }
 
-/* ---------------------------------------------------
-   2.4) Effacer l’ancienne position du bateau
-----------------------------------------------------*/
+//  Effacer l’ancienne position du bateau
 $clear = $sql->db->prepare("UPDATE $table SET boat = 0 WHERE boat = ?");
 $clear->execute([$shipId]);
 
-/* ---------------------------------------------------
-   2.5) Enregistrer les nouvelles cases
-----------------------------------------------------*/
+//  Enregistrer les nouvelles cases
 $update = $sql->db->prepare("UPDATE $table SET boat = ? WHERE idgrid = ?");
 foreach ($positions as $p) {
     $update->execute([$shipId, $p]);

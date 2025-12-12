@@ -1,4 +1,4 @@
-/* Style général */
+
 .defeat-body {
     margin: 0;
     padding: 0;
@@ -11,7 +11,7 @@
     height: 100vh;
 }
 
-/* Conteneur principal */
+
 .defeat-container {
     display: flex;
     justify-content: center;
@@ -19,7 +19,7 @@
     width: 100%;
 }
 
-/* Carte centrale */
+
 .defeat-card {
     background: rgba(255, 255, 255, 0.05);
     padding: 50px 40px;
@@ -30,7 +30,7 @@
     max-width: 600px;
 }
 
-/* Titre */
+
 .defeat-title {
     font-size: 50px;
     margin-bottom: 20px;
@@ -38,20 +38,20 @@
     text-shadow: 0 0 10px rgba(255, 80, 80, 0.7);
 }
 
-/* Paragraphe principal */
+
 .defeat-info {
     font-size: 22px;
     margin-bottom: 15px;
 }
 
-/* Sous-texte */
+
 .defeat-sub {
     font-size: 18px;
     opacity: 0.9;
     margin-bottom: 35px;
 }
 
-/* Formulaire + bouton */
+
 .defeat-form {
     margin-top: 20px;
 }

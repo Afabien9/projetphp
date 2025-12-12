@@ -69,7 +69,7 @@ $ready1 = $sql->db->query("SELECT COUNT(*) FROM joueur1 WHERE boat > 0")->fetchC
 $ready2 = $sql->db->query("SELECT COUNT(*) FROM joueur2 WHERE boat > 0")->fetchColumn() == 17;
 $bothReady = ($ready1 && $ready2);
 
-/* Bateaux déjà placés */
+// Bateaux déjà placés 
 $boatPlaced = array_fill_keys(array_keys($ships), false);
 foreach ($grid as $cell) {
     if ($cell["boat"] > 0) {
