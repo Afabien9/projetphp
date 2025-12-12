@@ -1,0 +1,57 @@
+/* choice_style.css */
+/* Thème lumineux bleu futuriste */
+
+:root {
+    --bg1: #0e1729;
+    --bg2: #152a44;
+    --accent: #00b4ff;
+    --accent2: #7CFF7C;
+    --text: #dbe9ff;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, var(--bg1), var(--bg2));
+    font-family: "Segoe UI", sans-serif;
+    color: var(--text);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+h2 {
+    font-size: 32px;
+    text-shadow: 0 0 20px rgba(0,180,255,0.35);
+}
+
+.ps-btn {
+    padding: 14px 30px;
+    border: none;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 12px;
+    color: #02131c;
+    background: var(--accent);
+    box-shadow: 0 6px 18px rgba(0,180,255,0.4);
+    transition: 0.15s ease;
+}
+
+.ps-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 28px rgba(0,180,255,0.55);
+}
+
+.ps-btn-secondary {
+    background: var(--accent2);
+    box-shadow: 0 6px 18px rgba(124,255,124,0.4);
+}
+
+.ps-container {
+    margin-top: 50px;
+    display: flex;
+    gap: 25px;
+}

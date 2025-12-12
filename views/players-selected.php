@@ -21,7 +21,8 @@ if (!isset($_SESSION["role"])) {
     <head>
         <meta charset="UTF-8">
         <title>Choix du joueur</title>
-        <link rel="stylesheet" href="/Projet_php/styles_css.css">
+        <link rel="stylesheet" href="/Projet_php/CSS/styles_css.css">
+        <link rel="stylesheet" href="/Projet_php/CSS/choice_style.css">
     </head>
     <body>
         <h2 style="text-align:center; margin-top:80px;">Choisissez votre rôle</h2>
@@ -82,7 +83,7 @@ foreach ($grid as $cell) {
     <meta charset="UTF-8">
     <title>Placement des bateaux</title>
     <link rel="stylesheet" href="/Projet_php/CSS/styles_css.css">
-    <link rel="stylesheet" href="/Projet_php/CSS/placement_css.css">
+    <link rel="stylesheet" href="/Projet_php/CSS/placement_style.css">
 
     <style>
         body {
