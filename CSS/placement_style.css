@@ -1,0 +1,137 @@
+/* placement_style.css */
+/* Style moderne lumineux pour la page de placement */
+
+:root {
+    --bg1: #0f1724;
+    --bg2: #13243d;
+    --accent: #00b4ff;
+    --accent2: #7CFF7C;
+    --text: #d7e6ff;
+    --grey: #b7c3d8;
+}
+
+/* Global */
+body {
+    margin: 0;
+    padding: 30px;
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    background: linear-gradient(135deg, var(--bg1), var(--bg2));
+    font-family: "Segoe UI", sans-serif;
+    color: var(--text);
+}
+
+/* Bateaux */
+.ship-list {
+    width: 240px;
+    padding: 20px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 16px;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.4);
+    backdrop-filter: blur(8px);
+}
+
+.ship-list h3 {
+    text-align: center;
+    margin-bottom: 14px;
+}
+
+.ship {
+    background: linear-gradient(90deg, #333, #444);
+    color: white;
+    padding: 12px;
+    margin: 10px 0;
+    cursor: grab;
+    text-align: center;
+    border-radius: 10px;
+    font-size: 16px;
+    transition: 0.15s ease;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+}
+
+.ship:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 26px rgba(0,0,0,0.5);
+}
+
+.ship.placed {
+    opacity: .35;
+    cursor: not-allowed;
+    filter: grayscale(30%);
+}
+
+/* Grille */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(10, 38px);
+    gap: 7px;
+    padding: 15px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 14px;
+    box-shadow: 0 14px 34px rgba(0,0,0,0.5);
+    height: fit-content;
+}
+
+.cell {
+    width: 38px;
+    height: 38px;
+    background: #d3d3d3;
+    border: 1px solid rgba(0,0,0,0.35);
+    border-radius: 6px;
+    transition: 0.15s ease;
+}
+
+.cell:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 22px rgba(0,0,0,0.45);
+}
+
+.cell.ship-cell {
+    background: #6a6a6a !important;
+    cursor: pointer;
+}
+
+/* Prévisualisation */
+.cell.preview-ok {
+    background: rgba(124, 255, 124, 0.55) !important;
+    box-shadow: 0 0 15px rgba(124,255,124,0.45);
+}
+
+.cell.preview-bad {
+    background: rgba(255, 60, 60, 0.55) !important;
+    box-shadow: 0 0 15px rgba(255,60,60,0.45);
+}
+
+/* Bouton démarrer */
+.start-container {
+    position: fixed;
+    bottom: 40px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.start-btn {
+    padding: 15px 26px;
+    background: var(--accent2);
+    font-size: 20px;
+    font-weight: bold;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 10px 24px rgba(124,255,124,0.4);
+    transition: 0.15s ease;
+    color: #06210b;
+}
+
+.start-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 36px rgba(124,255,124,0.55);
+}
+
+.start-note {
+    opacity: .7;
+    color: var(--grey);
+    margin-top: 8px;
+}

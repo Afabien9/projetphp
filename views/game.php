@@ -63,7 +63,7 @@ $enemyGrid = $req2->fetchAll(PDO::FETCH_ASSOC);
 <head>
 <meta charset="utf-8">
 <title>Bataille Navale – <?= htmlspecialchars($current) ?></title>
-<link rel="stylesheet" href="/Projet_php/game_style.css">
+<link rel="stylesheet" href="/Projet_php/CSS/game_style.css">
 </head>
 <body class="game-body">
 

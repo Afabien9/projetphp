@@ -81,7 +81,8 @@ foreach ($grid as $cell) {
 <head>
     <meta charset="UTF-8">
     <title>Placement des bateaux</title>
-    <link rel="stylesheet" href="/Projet_php/styles_css.css">
+    <link rel="stylesheet" href="/Projet_php/CSS/styles_css.css">
+    <link rel="stylesheet" href="/Projet_php/CSS/placement_css.css">
 
     <style>
         body {

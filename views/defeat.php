@@ -20,7 +20,7 @@ $current = $_SESSION["role"] ?? null;
 <head>
 <meta charset="UTF-8">
 <title>Défaite</title>
-<link rel="stylesheet" href="/Projet_php/defeat_style.css">
+<link rel="stylesheet" href="/Projet_php/CSS/defeat_style.css">
 </head>
 <body class="defeat-body">
 

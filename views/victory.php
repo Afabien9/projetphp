@@ -21,7 +21,7 @@ $current = $_SESSION["role"] ?? null;
 <head>
     <meta charset="UTF-8">
     <title>Victoire</title>
-    <link rel="stylesheet" href="/Projet_php/victory_style.css">
+    <link rel="stylesheet" href="/Projet_php/CSS/victory_style.css">
 </head>
 <body class="victory-body">
 
