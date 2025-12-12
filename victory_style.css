@@ -1,0 +1,76 @@
+/* Style général */
+.victory-body {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #0f5132, #145a44);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Conteneur principal */
+.victory-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+/* Carte centrale */
+.victory-card {
+    background: rgba(255, 255, 255, 0.08);
+    padding: 50px 40px;
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    text-align: center;
+    max-width: 600px;
+}
+
+/* Titre */
+.victory-title {
+    font-size: 50px;
+    margin-bottom: 20px;
+    color: #7CFF7C;
+    text-shadow: 0 0 10px rgba(70, 255, 120, 0.8);
+}
+
+/* Paragraphe principal */
+.victory-info {
+    font-size: 22px;
+    margin-bottom: 15px;
+}
+
+/* Sous-texte */
+.victory-sub {
+    font-size: 18px;
+    opacity: 0.9;
+    margin-bottom: 35px;
+}
+
+/* Formulaire */
+.victory-form {
+    margin-top: 20px;
+}
+
+/* Bouton */
+.retry-btn {
+    background: #28a745;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 50px;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    transition: 0.3s ease;
+    box-shadow: 0 5px 15px rgba(60, 255, 120, 0.4);
+}
+
+.retry-btn:hover {
+    background: #1f8f3a;
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(60, 255, 120, 0.6);
+}

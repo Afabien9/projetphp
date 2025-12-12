@@ -1,0 +1,75 @@
+/* Style général */
+.defeat-body {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Conteneur principal */
+.defeat-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+/* Carte centrale */
+.defeat-card {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 50px 40px;
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    text-align: center;
+    max-width: 600px;
+}
+
+/* Titre */
+.defeat-title {
+    font-size: 50px;
+    margin-bottom: 20px;
+    color: #ff4f4f;
+    text-shadow: 0 0 10px rgba(255, 80, 80, 0.7);
+}
+
+/* Paragraphe principal */
+.defeat-info {
+    font-size: 22px;
+    margin-bottom: 15px;
+}
+
+/* Sous-texte */
+.defeat-sub {
+    font-size: 18px;
+    opacity: 0.9;
+    margin-bottom: 35px;
+}
+
+/* Formulaire + bouton */
+.defeat-form {
+    margin-top: 20px;
+}
+
+.retry-btn {
+    background: #ff4f4f;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 50px;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    transition: 0.3s ease;
+    box-shadow: 0 5px 15px rgba(255, 80, 80, 0.4);
+}
+
+.retry-btn:hover {
+    background: #ff3333;
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(255, 80, 80, 0.6);
+}

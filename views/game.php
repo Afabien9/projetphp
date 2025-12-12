@@ -61,79 +61,51 @@ $enemyGrid = $req2->fetchAll(PDO::FETCH_ASSOC);
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <title>Bataille Navale – <?= htmlspecialchars($current) ?></title>
-    <link rel="stylesheet" href="/Projet_php/styles_css.css">
-    <style>
-        .turnBox {
-            text-align:center;
-            font-size:22px;
-            padding:10px;
-            margin-bottom:20px;
-            font-weight:bold;
-        }
-        .turnYou { color: green; }
-        .turnWait { color: red; }
-    </style>
+<meta charset="utf-8">
+<title>Bataille Navale – <?= htmlspecialchars($current) ?></title>
+<link rel="stylesheet" href="/Projet_php/game_style.css">
 </head>
-<body>
+<body class="game-body">
+
 
 <div class="turnBox <?= $myTurn ? "turnYou" : "turnWait" ?>">
-    <?= $myTurn ? "🔥 À VOUS DE JOUER !" : "⏳ En attente de l'autre joueur..." ?>
+<?= $myTurn ? "🔥 À VOUS DE JOUER !" : "⏳ En attente de l'autre joueur..." ?>
 </div>
 
-<h2 style="text-align:center;">Votre grille (<?= $current ?>)</h2>
+
+<h2 class="board-title">Votre grille (<?= $current ?>)</h2>
 <div class="grid-container">
-<?php
-foreach ($myGrid as $case) {
-
-    if ($case['boat'] > 0) $color = '#333';
-    else $color = 'lightgrey';
-
-    if ($case['checked'] == 1) {
-        $color = ($case['boat'] > 0) ? 'red' : 'blue';
-    }
-
-    echo "<div class='cell-btn' style='background-color:$color;'></div>";
-}
+<?php foreach ($myGrid as $case):
+$color = ($case['boat'] > 0) ? '#333' : 'lightgrey';
+if ($case['checked'] == 1) $color = ($case['boat'] > 0) ? 'red' : 'blue';
 ?>
+<div class="cell-btn" style="background-color: <?= $color ?>;"></div>
+<?php endforeach; ?>
 </div>
+
 
 <br><br>
 
-<h2 style="text-align:center;">Grille adverse (<?= $enemy ?>)</h2>
+
+<h2 class="board-title">Grille adverse (<?= $enemy ?>)</h2>
 <div class="grid-container">
-<?php
-foreach ($enemyGrid as $case) {
-
-    $color = 'grey';
-
-    if ($case['checked'] == 1) {
-        $color = ($case['boat'] > 0) ? 'red' : 'blue';
-    }
-
-    $disabled = ($case['checked'] == 1 || !$myTurn) ? "disabled" : "";
-
-    echo '<form method="post" action="/Projet_php/scripts/click_case.php" style="display:inline-block;">';
-    echo '<button class="cell-btn"
-                 type="submit"
-                 name="cell"
-                 value="'. $case['idgrid'] .'"
-                 style="background-color:'.$color.';"
-                 '.$disabled.'>
-          </button>';
-    echo '</form>';
-}
+<?php foreach ($enemyGrid as $case):
+$color = 'grey';
+if ($case['checked'] == 1) $color = ($case['boat'] > 0) ? 'red' : 'blue';
+$disabled = ($case['checked'] == 1 || !$myTurn) ? "disabled" : "";
 ?>
+<form method="post" action="/Projet_php/scripts/click_case.php" class="cell-form">
+<button class="cell-btn enemy-btn" type="submit" name="cell" value="<?= $case['idgrid'] ?>" style="background-color: <?= $color ?>;" <?= $disabled ?>></button>
+</form>
+<?php endforeach; ?>
 </div>
+
 
 <br><br>
 
-<div style="text-align:center;">
-    <form method="post" action="/Projet_php/scripts/reset_total.php">
-        <button type="submit" name="reset_total">❌ Fin de partie (RESET)</button>
-    </form>
-</div>
 
-</body>
-</html>
+<div class="reset-box">
+<form method="post" action="/Projet_php/scripts/reset_total.php">
+<button type="submit" name="reset_total" class="reset-btn">❌ Fin de partie (RESET)</button>
+</form>
+</div>

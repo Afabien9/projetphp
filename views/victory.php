@@ -21,25 +21,29 @@ $current = $_SESSION["role"] ?? null;
 <head>
     <meta charset="UTF-8">
     <title>Victoire</title>
-    <link rel="stylesheet" href="/Projet_php/styles_css.css">
+    <link rel="stylesheet" href="/Projet_php/victory_style.css">
 </head>
-<body style="text-align:center; padding-top:80px;">
+<body class="victory-body">
 
-<h1 style="color:green; font-size:48px;">🎉 Victoire ! 🎉</h1>
+<div class="victory-container">
+    <div class="victory-card">
+        <h1 class="victory-title">🎉 Victoire ! 🎉</h1>
 
-<p style="font-size:22px; margin-top:20px;">
-    Le joueur <strong><?= htmlspecialchars($winner) ?></strong> a remporté la partie.
-</p>
+        <p class="victory-info">
+            Le joueur <strong><?= htmlspecialchars($winner) ?></strong> a remporté la partie.
+        </p>
 
-<?php if ($current === $winner): ?>
-    <p style="font-size:18px;">Bravo, vous avez coulé tous les bateaux adverses.</p>
-<?php else: ?>
-    <p style="font-size:18px;">Vous regardez l'écran de victoire de l'autre joueur.</p>
-<?php endif; ?>
+        <?php if ($current === $winner): ?>
+            <p class="victory-sub">Bravo, vous avez coulé tous les bateaux adverses.</p>
+        <?php else: ?>
+            <p class="victory-sub">Vous regardez l'écran de victoire de l'autre joueur.</p>
+        <?php endif; ?>
 
-<form method="post" action="/Projet_php/scripts/reset_total.php" style="margin-top:40px;">
-    <button style="padding:15px 25px; font-size:20px;">🔁 Rejouer</button>
-</form>
+        <form method="post" action="/Projet_php/scripts/reset_total.php" class="victory-form">
+            <button class="retry-btn">🔁 Rejouer</button>
+        </form>
+    </div>
+</div>
 
 </body>
 </html>
