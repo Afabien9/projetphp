@@ -84,55 +84,6 @@ foreach ($grid as $cell) {
     <title>Placement des bateaux</title>
     <link rel="stylesheet" href="/Projet_php/CSS/styles_css.css">
     <link rel="stylesheet" href="/Projet_php/CSS/placement_style.css">
-
-    <style>
-        body {
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-        }
-
-        .ship-list { width: 220px; }
-        .ship {
-            background: #444;
-            color: white;
-            padding: 12px;
-            margin: 10px 0;
-            cursor: grab;
-            text-align: center;
-            border-radius: 4px;
-            opacity: 1;
-            transition: 0.2s;
-            font-size: 16px;
-        }
-        .ship.placed {
-            opacity: .35;
-            cursor: not-allowed;
-        }
-
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(10, 35px);
-            gap: 5px;
-        }
-
-        .cell {
-            width: 35px;
-            height: 35px;
-            background: #ccc;
-            border: 1px solid #333;
-            position: relative;
-        }
-
-        .cell.ship-cell { background: #666 !important; cursor: pointer; }
-
-        .cell.preview-ok {
-            background: rgba(0, 255, 0, 0.45) !important;
-        }
-        .cell.preview-bad {
-            background: rgba(255, 0, 0, 0.45) !important;
-        }
-    </style>
 </head>
 
 <body>
